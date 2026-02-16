@@ -5,6 +5,24 @@
 
 ---
 
+## 🚨 Mandatory Protocol (絕對準則)
+
+為了確保 Dashboard 的即時性與準確性，所有 Agent 必須遵守以下規則：
+
+1.  **Start Task (開工)**:
+    *   在執行任何任務前，**必須**先將 `## Status` 更新為 `🔵 working — [任務名稱]` 或 `🟠 building — [任務名稱]`。
+    *   **嚴禁** 在 `🟢 idle` 狀態下偷偷執行任務。
+
+2.  **Finish Task (完工)**:
+    *   任務完成後，**必須**將 `## Status` 更新回 `🟢 idle — 待命中`。
+    *   **必須** 在 `## Tasks` 中勾選已完成的項目 (`- [x]`)。
+    *   **必須** 在 `## Log` 中新增一條執行紀錄。
+
+3.  **Persistence (記憶)**:
+    *   Agent 必須將此 Protocol 寫入自己的長期記憶 (`MEMORY.md`)，以免遺忘。
+
+---
+
 ## 你的唯一職責
 
 在你的 workspace 根目錄維護一個 `PROJECT.md`：
@@ -151,6 +169,7 @@
 |:---|:---|:---|
 | clawd-voice | ../clawd-voice/ | 語音處理 |
 | clawd-invest | ../clawd-invest/ | 投資分析 |
+| clawd-sre | ../clawd-sre/ | 系統維運 |
 ```
 
 ### 新建子 Agent 時
