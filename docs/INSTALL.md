@@ -36,12 +36,14 @@ If you are an **OpenClaw Agent** reading this, please perform the following step
     -   **Read the Spec**: `docs/PROJECT_MD_SPEC.md`.
     -   **Create PROJECT.md**: In the Agent Workspace Root (or the current project root), create a `PROJECT.md` file following the spec.
     -   **Update Status**: Set the status to `🟢 idle` or `🟡 planning` to confirm the dashboard detects it.
+    -   **Persistence (IMPORTANT)**: You MUST summarize this protocol (maintaining PROJECT.md) and write it into your `MEMORY.md`. If you don't, you will forget to update your status in future sessions.
 
 6.  **Onboard Sub-Agents (CRITICAL)**:
     -   When you spawn a Sub-Agent (e.g., specific task force), you MUST:
         1.  Create the sub-agent directory.
         2.  **IMMEDIATELY create a `PROJECT.md`** in that directory.
         3.  Link it in your main `PROJECT.md` under `## Sub-Agents`.
+        4.  **Instruct the Sub-Agent**: Explicitly tell them to read `docs/PROJECT_MD_SPEC.md` and adopt the protocol in their memories.
     -   Example:
         ```bash
         mkdir sub-agent-a
