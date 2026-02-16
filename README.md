@@ -12,6 +12,8 @@ ClawDashboard2 反過來：
 > **Dashboard 主動讀取 Agent 的 project `.md` 檔。**
 > Agent 只需按規範維護自己的 `.md`，不需要知道 Dashboard 的存在。
 
+
+![alt text](image.png)
 ## 架構對比
 
 | | v1 (ClawDashboard) | v2 (ClawDashboard2) |
