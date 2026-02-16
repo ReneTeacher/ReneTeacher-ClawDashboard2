@@ -16,10 +16,11 @@ ClawDashboard2 反過來：
 
 | | v1 (ClawDashboard) | v2 (ClawDashboard2) |
 |:---|:---|:---|
-| 資料來源 | Agent 打 API 回報 | Dashboard 讀取 `.md` 檔 |
+| 資料來源 | Agent 打 API 回報 | Dashboard 讀取 `PROJECT.md`, `MEMORY.md`, `*.md` |
 | Agent 耦合 | 高（必須知道 API） | **零**（只維護自己的 `.md`）|
 | 新 Agent 支援 | 需手動教學 | **自動**（有 `.md` 就能讀）|
 | Task 積累 | 永久存 SQLite | **Agent 自行管理 + 歸檔** |
+| 知識庫 | 需手動同步 | **自動掃描 Agent 目錄下所有 .md** |
 | 技術棧 | React + Vite + Express + SQLite | **單檔 HTML + Node.js** |
 | npm 依賴 | ~200 packages | **1 package** (chokidar) |
 | 安裝時間 | 30-60 秒 | **< 2 秒** |
@@ -45,6 +46,7 @@ https://raw.githubusercontent.com/tbdavid2019/ClawDashboard2/main/docs/INSTALL.m
 (請務必先問我 Workspace Root 在哪裡，再決定安裝位置)
 (含 Port 檢查、PROJECT.md 初始化、Sub-Agent 協議)
 (之後若新增 Sub-Agent，也請務必幫它們建立 PROJECT.md 並定期檢查)
+(若需升級，請參閱指南中的 Maintenance 章節執行更新)
 (若需移除，請參閱指南中的 Uninstallation 章節執行徹底清除)
 ```
 
