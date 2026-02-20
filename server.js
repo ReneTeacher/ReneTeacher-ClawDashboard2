@@ -7,7 +7,18 @@ const url = require('url');
 // Configuration
 const WORKSPACE = process.env.WORKSPACE_ROOT || path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 3001;
-const IGNORED_PATHS = ['**/node_modules/**', '**/.git/**', '**/ClawDashboard2/**'];
+const IGNORED_PATHS = [
+  '**/node_modules/**', 
+  '**/.git/**', 
+  '**/ClawDashboard2/**',
+  '**/temp_memory_repo/**',
+  '**/openclaw-memory/**',
+  '**/memory/2026-02-*.md',
+  '**/memory/templates/**',
+  '**/memory/calendar/**',
+  '**/skills/**/references/**',
+  '**/__pycache__/**'
+];
 
 console.log(`Starting ClawDashboard2...`);
 console.log(`Watching workspace: ${WORKSPACE}`);
@@ -152,6 +163,56 @@ watcher
     .on('add', filePath => updateAgent(filePath))
     .on('change', filePath => updateAgent(filePath))
     .on('unlink', filePath => removeAgent(filePath));
+
+// ---- Initial Scan on Startup ----
+function initialScan() {
+    console.log('Running initial scan for PROJECT.md files...');
+    try {
+        // Find all PROJECT.md files in workspace
+        const walkSync = (dir, filelist = []) => {
+            const files = fs.readdirSync(dir);
+            files.forEach(file => {
+                const filePath = path.join(dir, file);
+                const stat = fs.statSync(filePath);
+                if (stat.isDirectory() && !file.startsWith('.') && !IGNORED_PATHS.some(ignored => filePath.includes(ignored))) {
+                    filelist = walkSync(filePath, filelist);
+                } else if (file === 'PROJECT.md') {
+                    filelist.push(filePath);
+                }
+            });
+            return filelist;
+        };
+        
+        const projectFiles = walkSync(WORKSPACE);
+        console.log(`Found ${projectFiles.length} PROJECT.md files`);
+        
+        projectFiles.forEach(filePath => {
+            const agent = parseProjectMd(filePath);
+            if (agent) {
+                agents.set(agent.id, agent);
+                console.log(`Loaded agent: ${agent.name}`);
+            }
+        });
+        
+        // Also check workspace root for PROJECT.md
+        const rootProjectMd = path.join(WORKSPACE, 'PROJECT.md');
+        if (fs.existsSync(rootProjectMd)) {
+            const agent = parseProjectMd(rootProjectMd);
+            if (agent) {
+                agents.set(agent.id, agent);
+                console.log(`Loaded root agent: ${agent.name}`);
+            }
+        }
+    } catch (e) {
+        console.error('Error during initial scan:', e);
+    }
+}
+
+// Run initial scan after watcher is ready
+watcher.on('ready', () => {
+    console.log('Watcher ready, running initial scan...');
+    initialScan();
+});
 
 function updateAgent(filePath) {
     console.log(`Detected change: ${filePath}`);
